@@ -22,12 +22,7 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
 
     @Throws(Exception::class)
     override fun configure(http: HttpSecurity) {
-        http.formLogin()
-                .defaultSuccessUrl("/hello").permitAll()
-                .and()
-                .authorizeRequests()
-                .anyRequest()
-                .authenticated()
+        http.formLogin().and().authorizeRequests().anyRequest().authenticated()
     }
 
     override fun configure(web: WebSecurity?) {
@@ -36,6 +31,6 @@ class SecurityConfig : WebSecurityConfigurerAdapter() {
     }
 
     override fun configure(auth: AuthenticationManagerBuilder?) {
-        auth?.userDetailsService(userDetailsService)?.passwordEncoder(NoOpPasswordEncoder.getInstance())
+        auth?.userDetailsService(userDetailsService)?.passwordEncoder(BCryptPasswordEncoder())
     }
 }

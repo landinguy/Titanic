@@ -18,5 +18,5 @@ class UserService {
 
     fun selectById(id: Long): User = userMapper.selectById(id)
 
-    fun selectByUsername(username: String?): User = userMapper.selectByUsername(username)
+    fun selectByUsername(username: String?): User? = userMapper.selectByUsername(username)
 }

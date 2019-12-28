@@ -2,6 +2,7 @@ package com.landingguy.Titanic.entity
 
 import com.baomidou.mybatisplus.annotation.IdType
 import com.baomidou.mybatisplus.annotation.TableId
+import org.springframework.security.core.userdetails.UserDetails
 import javax.persistence.*
 
 /**
@@ -17,6 +18,6 @@ data class User(
         var id: Long?,
         @Column(columnDefinition = "varchar(40)", unique = true)
         var username: String,
-        @Column(columnDefinition = "varchar(40)")
+        @Column(columnDefinition = "varchar(60)")
         var password: String
 )

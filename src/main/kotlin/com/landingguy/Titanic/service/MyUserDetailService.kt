@@ -9,6 +9,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.security.core.userdetails.UserDetailsService
+import org.springframework.security.core.userdetails.UsernameNotFoundException
 import org.springframework.stereotype.Service
 import javax.annotation.Resource
 
@@ -26,17 +27,15 @@ class MyUserDetailService : UserDetailsService {
 
     override fun loadUserByUsername(username: String?): UserDetails {
         log.info("username#$username")
-        val user = com.landingguy.Titanic.entity.User(0L, "", "")
         val list = mutableListOf<GrantedAuthority>()
-        userService.selectByUsername(username)?.let {
-            user.username = it.username
-            user.password = it.password
+        val user = userService.selectByUsername(username) ?: throw UsernameNotFoundException("用户名不存在")
+        return user.let {
             roleService.selectByUserId(it.id).forEach {
                 roleService.selectById(it.roleId)?.let {
                     list.add(SimpleGrantedAuthority(it.name))
                 }
             }
+            User(it.username, it.password, list)
         }
-        return User(user.username, user.password, list)
     }
 }
